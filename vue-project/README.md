@@ -6,8 +6,8 @@
 cd vue-project/
 $ npm i 
 $ npm run dev
-npm i express tsx remult
-npm i @types/express -D
+npm i express tsx remult cookie-session pg
+npm i  -D @types/express @types/cookie-session
 npm run dev-node
 
 ```
