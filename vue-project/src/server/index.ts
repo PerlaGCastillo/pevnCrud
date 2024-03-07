@@ -7,19 +7,10 @@ import compression from "compression"
 import path from "path"
 
 const app = express()
-app.use(
-  session({
-    secret: process.env["SESSION_SECRET"] || "my secret",
-  })
-)
-app.use(helmet())
-app.use(compression())
+app.use(session({ secret: process.env["SESSION_SECRET"] || "my secret",}))
 app.use(auth)
 app.use(api)
 
-app.use(express.static(path.join(__dirname, "../")))
-app.get("/*", (_, res) => {
-  res.sendFile(path.join(__dirname, "../", "index.html"))
-})
-
+app.get("/api/hi", (_, res) => res.send("hola"))
+app.use(express.static(process.cwd()+"/dist"))
 app.listen(process.env["PORT"] || 3002, () => console.log("Server started"))

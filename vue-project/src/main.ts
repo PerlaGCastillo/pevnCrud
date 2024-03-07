@@ -1,11 +1,6 @@
 import './assets/main.css'
 
 import { createApp } from 'vue'
-// import Auth from './components/Auth'
+import Auth from './components/Auth.vue'
 
-// createApp(Auth).mount('#app')
-
-
-import App from './App.vue'
-
-createApp(App).mount('#app')
+createApp(Auth).mount('#app')

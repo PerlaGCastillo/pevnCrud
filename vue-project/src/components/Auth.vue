@@ -1,26 +1,29 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue"
 import { remult } from "remult"
-import App from "./App.vue"
+import App from "@/App.vue";
 
 const username = ref("")
 const signedIn = ref(false)
 
-const signIn = async () => {
+async function signIn() {
   const result = await fetch("/api/signIn", {
     method: "POST",
     headers: {
-      "Content-Type": "application/json",
-    },
+      "Content-Type": "application/json"
+    }, 
     body: JSON.stringify({ username: username.value }),
   })
   if (result.ok) {
     remult.user = await result.json()
     signedIn.value = true
-    username.value = ""
-  } else alert(await result.json())
+    // username.value = ""
+  } else {
+    alert(await result.json())
+  }  
 }
-const signOut = async () => {
+
+async function signOut() {
   await fetch("/api/signOut", {
     method: "POST",
   })
@@ -29,7 +32,9 @@ const signOut = async () => {
 }
 
 onMounted(async () => {
-  remult.user = await fetch("/api/currentUser").then((r) => r.json())
+  // remult.user = await fetch("/api/currentUser").then((r) => r.json())
+  const result = await fetch("/api/currentUser")
+  remult.user = await result.json()
   signedIn.value = remult.authenticated()
 })
 </script>
@@ -37,7 +42,7 @@ onMounted(async () => {
   <div v-if="!signedIn">
     <h1>todos</h1>
     <main>
-      <form @submit.prevent="signIn()">
+      <form @submit.prevent="$event => signIn()">
         <input v-model="username" placeholder="Username, try Steve or Jane" />
         <button>Sign in</button>
       </form>
@@ -45,7 +50,7 @@ onMounted(async () => {
   </div>
   <div v-else>
     <header>
-      Hello {{ remult.user!.name }}
+      Hello {{ remult.user?.name }}
       <button @click="signOut()">Sign Out</button>
     </header>
     <App />

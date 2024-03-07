@@ -7,7 +7,6 @@ const validUsers: UserInfo[] = [
 ]
 
 export const auth = Router()
-
 auth.use(express.json())
 
 auth.post("/api/signIn", (req, res) => {
@@ -16,13 +15,11 @@ auth.post("/api/signIn", (req, res) => {
     req.session!["user"] = user
     res.json(user)
   } else {
-    res.status(404).json("Invalid user, try 'Steve' or 'Jane'")
+    res.status(404).json("Invalid user")
   }
 })
-
+auth.get("/api/currentUser", (req, res) => res.json(req.session!["user"]))
 auth.post("/api/signOut", (req, res) => {
   req.session!["user"] = null
   res.json("signed out")
 })
-
-auth.get("/api/currentUser", (req, res) => res.json(req.session!["user"]))

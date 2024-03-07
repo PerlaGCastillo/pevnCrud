@@ -43,7 +43,7 @@ async function deleteTask(task: Task) {
   }
 }
 async function setAllCompleted(completed: boolean) {
-  TasksController.setAllCompleted(completed)
+  await TasksController.setAllCompleted(completed)
 }
 </script>
 <template>
@@ -51,7 +51,7 @@ async function setAllCompleted(completed: boolean) {
     <h1>todos</h1>
     <main>
       <form
-        @submit.prevent="addTask()"
+        @submit.prevent="$event=>addTask()"
         v-if="taskRepo.metadata.apiInsertAllowed()"
       >
         <input v-model="newTaskTitle" placeholder="What needs to be done?" />
@@ -61,22 +61,22 @@ async function setAllCompleted(completed: boolean) {
         <input
           type="checkbox"
           v-model="task.completed"
-          @change="saveTask(task)"
+          @change="$event=>saveTask(task)"
         />
         <input v-model="task.title" />
-        <button @click="saveTask(task)">Save</button>
+        <button @click="$event=>saveTask(task)">Save</button>
         <button
-          v-if="taskRepo.metadata.apiDeleteAllowed(task)"
-          @click="deleteTask(task)"
+          v-if="taskRepo.metadata.apiDeleteAllowed()"
+          @click="$event=>deleteTask(task)"
         >
           Delete
         </button>
       </div>
       <div>
-        <button @click="setAllCompleted(true)">Set All as Completed</button>
-        <button @click="setAllCompleted(false)">Set All as Uncompleted</button>
+        <button @click="$event=>setAllCompleted(true)">Set All as Completed</button>
+        <button @click="$event=>setAllCompleted(false)">Set All as Uncompleted</button>
       </div>
     </main>
   </div>
 </template>
-<!-- ./shared/Task -->
+./shared/Task
